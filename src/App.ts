@@ -3,6 +3,8 @@ import "dotenv/config";
 
 import express, { Request, Response, NextFunction } from "express";
 import "express-async-errors";
+import helmet from "helmet";
+import cors from "cors";
 
 import routes from "./routes";
 import "./database";
@@ -20,6 +22,8 @@ class App {
     this.exception();
   }
   middlewares() {
+    this.server.use(cors());
+    this.server.use(helmet());
     this.server.use(express.json());
   }
   routes() {
