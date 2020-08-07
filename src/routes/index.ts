@@ -2,8 +2,8 @@ import { Router, Request, Response } from "express";
 
 const routes = Router();
 
-routes.get("/", (req: Request, res: Response) => {
-  return res.json({
+routes.get("/", (request: Request, response: Response) => {
+  return response.json({
     Author: "Augusto Vinicius",
     Github: "https://github.com/adoidadox2",
     Project: "Marketplace API",
