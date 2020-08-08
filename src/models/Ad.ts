@@ -37,7 +37,7 @@ export default class Ad {
   @OneToMany((type) => Purchase, (purchase) => purchase.ad)
   purchases: Purchase[];
 
-  @Column()
+  @Column({ nullable: true })
   purchasedBy: string;
 
   @CreateDateColumn()
