@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import userRouter from "./user.routes";
 import sessionRouter from "./session.routes";
+import adRouter from "./ad.routes";
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.get("/", (request: Request, response: Response) => {
 
 routes.use("/users", userRouter);
 routes.use("/sessions", sessionRouter);
+routes.use("/ads", adRouter);
 
 export default routes;
