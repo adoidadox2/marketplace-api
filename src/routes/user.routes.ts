@@ -8,5 +8,8 @@ userRouter.post("/", UserController.store);
 
 userRouter.use(ensureAuthenticated);
 userRouter.get("/", UserController.index);
+userRouter.put("/:id", UserController.update);
+userRouter.get("/:id", UserController.show);
+userRouter.delete("/:id", UserController.delete);
 
 export default userRouter;
