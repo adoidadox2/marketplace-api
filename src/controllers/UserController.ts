@@ -79,9 +79,9 @@ class UserController {
       user.password_hash = await encryptPassword(password);
     }
 
-    const insertedUser = await userRepository.save(user);
+    const updatedUser = await userRepository.save(user);
 
-    return response.json(insertedUser);
+    return response.json(updatedUser);
   }
   async delete(request: Request, response: Response): Promise<Response> {
     const userRepo = getRepository(User);
