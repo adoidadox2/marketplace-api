@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
-  BeforeUpdate,
   OneToMany,
 } from "typeorm";
 import Ad from "./Ad";
@@ -16,6 +15,7 @@ import bcrypt from "bcrypt";
 
 import authConfig from "../config/authConfig";
 import Purchase from "./Purchase";
+import encryptPassword from "../services/encryptPasswordService";
 
 @Entity("user")
 export default class User {
@@ -64,10 +64,9 @@ export default class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @BeforeUpdate()
   @BeforeInsert()
   async upPass() {
-    this.password_hash = await bcrypt.hash(this.password, 8);
+    this.password_hash = await encryptPassword(String(this.password));
     this.password = null;
   }
 
