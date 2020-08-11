@@ -4,12 +4,12 @@ import AppError from "../errors/AppError";
 import User from "../models/User";
 
 class SessionController {
-  async store(req: Request, res: Response): Promise<Response> {
-    const repo = getRepository(User);
+  async store(request: Request, response: Response): Promise<Response> {
+    const userRepository = getRepository(User);
 
-    const { email, password } = req.body;
+    const { email, password } = request.body;
 
-    const user = await repo.findOne({ where: { email } });
+    const user = await userRepository.findOne({ where: { email } });
 
     if (!user) {
       throw new AppError("User not found", 400);
@@ -19,7 +19,7 @@ class SessionController {
       throw new AppError("Invalid password", 401);
     }
 
-    return res.json({ user, token: user.generateToken() });
+    return response.json({ user, token: user.generateToken() });
   }
 }
 
