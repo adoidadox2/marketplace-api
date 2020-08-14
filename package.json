@@ -15,8 +15,10 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.7",
+    "@types/express-handlebars": "^3.1.0",
     "@types/helmet": "^0.0.47",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/nodemailer": "^6.4.0",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.9.7"
   },
@@ -26,8 +28,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-handlebars": "^5.1.0",
     "helmet": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.4.11",
+    "nodemailer-express-handlebars": "^4.0.0",
     "pg": "^8.3.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.25"
