@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  OneToOne,
 } from "typeorm";
 import User from "./User";
 import Ad from "./Ad";
+import Sale from "./Sale";
 
 @Entity("purchase")
 export default class Purchase {
@@ -41,6 +43,11 @@ export default class Purchase {
     nullable: false,
   })
   ad: Ad;
+
+  @OneToOne((type) => Sale, (sale) => sale.purchase, {
+    nullable: true,
+  })
+  sale: Sale;
 
   @CreateDateColumn()
   created_at: Date;
