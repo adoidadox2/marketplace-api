@@ -1,9 +1,7 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
-import AppError from "../errors/AppError";
 import Purchase from "../models/Purchase";
-import Ad from "../models/Ad";
-import User from "../models/User";
+import CreatePurchaseService from "../services/CreatePurchaseService";
 
 class PurchaseController {
   async index(request: Request, response: Response): Promise<Response> {
@@ -14,40 +12,14 @@ class PurchaseController {
     return response.json(purchases);
   }
   async store(request: Request, response: Response): Promise<Response> {
-    const adRepository = getRepository(Ad);
-    const userRepository = getRepository(User);
-    const purchaseRepository = getRepository(Purchase);
+    const { userId, body } = request;
 
-    const { ad, content } = request.body;
-
-    const purchaseAd = await adRepository.findOne({
-      where: { id: ad },
-      relations: ["author", "sale"],
+    const createdPurchase = await CreatePurchaseService.execute({
+      userId,
+      body,
     });
 
-    if (!purchaseAd) {
-      throw new AppError("Ad not found", 400);
-    }
-
-    if (purchaseAd.sale) {
-      throw new AppError("Ad has already been purchased", 400);
-    }
-
-    const user = await userRepository.findOne({
-      where: { id: request.userId },
-    });
-
-    if (!user) {
-      throw new AppError("User not found", 400);
-    }
-
-    const purchase = await purchaseRepository.save({
-      user,
-      ad: purchaseAd,
-      content,
-    });
-
-    return response.json(purchase);
+    return response.json(createdPurchase);
   }
 }
 
