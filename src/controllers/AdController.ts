@@ -13,9 +13,11 @@ class AdController {
     return response.json(ads);
   }
   async store(request: Request, response: Response): Promise<Response> {
+    const { userId, body } = request;
+
     const createdAd = await CreateAdService.execute({
-      userId: request.userId,
-      body: request.body,
+      userId,
+      body,
     });
 
     return response.json(createdAd);
