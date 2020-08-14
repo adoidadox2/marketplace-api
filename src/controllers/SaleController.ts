@@ -1,29 +1,26 @@
-import { getRepository, IsNull, Not } from "typeorm";
+import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import AppError from "../errors/AppError";
 import Purchase from "../models/Purchase";
-import Ad from "../models/Ad";
+import Sale from "../models/Sale";
 
 class SaleController {
   async index(request: Request, response: Response): Promise<Response> {
-    const adRepository = getRepository(Ad);
+    const saleRepository = getRepository(Sale);
 
-    const soldAds = await adRepository.find({
-      where: { purchasedBy: Not(IsNull()) },
-      relations: ["purchases"],
-    });
+    const sales = await saleRepository.find();
 
-    return response.json(soldAds);
+    return response.json(sales);
   }
   async store(request: Request, response: Response): Promise<Response> {
+    const saleRepository = getRepository(Sale);
     const purchaseRepository = getRepository(Purchase);
-    const adRepository = getRepository(Ad);
 
     const { purchaseId } = request.params;
 
     const purchase = await purchaseRepository.findOne({
       where: { id: purchaseId },
-      relations: ["ad", "ad.author"],
+      relations: ["ad", "ad.author", "ad.sale"],
     });
 
     if (!purchase) {
@@ -34,15 +31,13 @@ class SaleController {
       throw new AppError("You cannot sell an ad that is not yours", 401);
     }
 
-    if (purchase.ad.purchasedBy) {
+    if (purchase.ad.sale) {
       throw new AppError("Ad has already been sold", 400);
     }
 
-    purchase.ad.purchasedBy = purchaseId;
+    const sale = await saleRepository.save({ ad: purchase.ad, purchase });
 
-    const updatedAd = await adRepository.save(purchase.ad);
-
-    return response.json(updatedAd);
+    return response.json(sale);
   }
 }
 

@@ -22,14 +22,14 @@ class PurchaseController {
 
     const purchaseAd = await adRepository.findOne({
       where: { id: ad },
-      relations: ["author"],
+      relations: ["author", "sale"],
     });
 
     if (!purchaseAd) {
       throw new AppError("Ad not found", 400);
     }
 
-    if (ad.purchasedBy) {
+    if (purchaseAd.sale) {
       throw new AppError("Ad has already been purchased", 400);
     }
 

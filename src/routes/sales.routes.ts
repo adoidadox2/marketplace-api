@@ -6,7 +6,7 @@ const saleRouter = Router();
 
 saleRouter.use(ensureAuthenticated);
 saleRouter.get("/", SaleController.index);
-saleRouter.put("/:purchaseId", SaleController.store);
+saleRouter.post("/:purchaseId", SaleController.store);
 // saleRouter.get("/:id", SaleController.show);
 
 export default saleRouter;
