@@ -2,7 +2,8 @@ import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import Purchase from "../models/Purchase";
 import CreatePurchaseService from "../services/CreatePurchaseService";
-import mailService from "../services/mailService";
+import Queue from "../services/queueService";
+import PurchaseMail from "../jobs/PurchaseMailJob";
 
 class PurchaseController {
   async index(request: Request, response: Response): Promise<Response> {
@@ -20,18 +21,11 @@ class PurchaseController {
       body,
     });
 
-    await mailService.sendMail({
-      from: '"Gerenciamento de Vendas" <contato@marketplace-api.com>',
-      to: createdPurchase.ad.author.email,
-      replyTo: createdPurchase.user.email,
-      subject: `Solicitação de compra: ${createdPurchase.ad.title}`,
-      template: "purchase",
-      context: {
-        user: createdPurchase.user,
-        content: createdPurchase.content,
-        ad: createdPurchase.ad,
-      },
-    });
+    Queue.create(PurchaseMail.key, {
+      ad: createdPurchase.ad,
+      user: createdPurchase.user,
+      content: createdPurchase.content,
+    }).save();
 
     return response.json(createdPurchase);
   }
