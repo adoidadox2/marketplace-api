@@ -21,8 +21,9 @@ class PurchaseController {
     });
 
     await mailService.sendMail({
-      from: '"Lula" <lulinha@pt.com.br>',
+      from: '"Gerenciamento de Vendas" <contato@marketplace-api.com>',
       to: createdPurchase.ad.author.email,
+      replyTo: createdPurchase.user.email,
       subject: `Solicitação de compra: ${createdPurchase.ad.title}`,
       template: "purchase",
       context: {
