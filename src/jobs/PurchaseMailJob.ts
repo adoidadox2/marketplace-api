@@ -1,11 +1,13 @@
 import mailService from "../services/mailService";
+import PurchaseMailJobDTO from "../dtos/PurchaseMailJobDTO";
+import SendMailDTO from "../dtos/SendMailDTO";
 
 class PurchaseMail {
   get key(): string {
     return "PurchaseMailKey";
   }
 
-  async handle(job, done) {
+  async handle(job: PurchaseMailJobDTO, done: any) {
     const { ad, user, content } = job.data;
 
     await mailService.sendMail({
@@ -19,7 +21,7 @@ class PurchaseMail {
         content,
         ad,
       },
-    });
+    } as SendMailDTO);
 
     return done();
   }
