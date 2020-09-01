@@ -1,3 +1,4 @@
+
 <h1 align="center">
   AD Marketplace API
 </h1>
@@ -131,6 +132,11 @@ To start the server in a **production** environment:
     
     #To run the server already transpiled
 	$ yarn start
+
+### Comments -
+- All ID's are uuid
+- Handled errors return their `HTTP status` and a specific error message. ** Ex ** .: `{"status": "error", "message":" Ad not found "}`
+- Unexpected errors are treated as `status 500 - Internal Server Error`
 
 ## How to contribute :thinking::
 
